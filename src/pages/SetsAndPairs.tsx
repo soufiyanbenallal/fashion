@@ -1,57 +1,52 @@
 import { products } from "@/data/products";
-import ProductCard from "@/components/ProductCard";
 import setsImg from "@/assets/collections/sets-and-pairs.jpg";
+import CollectionPage from "@/components/brand/CollectionPage";
+import { StitchMark } from "@/components/brand/Logo";
 
 const setsProducts = products.filter(p =>
   ["golden-mist-pair", "classic-set", "country-feast-set", "salt-spout"].includes(p.slug)
 );
 
+const giftNotes = [
+  ["Wrapped by hand", "Tissue-wrapped and nestled in a recycled kraft box."],
+  ["A written note", "Add a message at checkout — we write it out by hand."],
+  ["Shipped free", "Complimentary shipping on every set, always."],
+];
+
 export default function SetsAndPairs() {
   return (
-    <>
-      {/* Hero */}
-      <section className="relative w-full h-[60vh]">
-        <img src={setsImg} alt="Sets and Pairs" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-          <div className="text-center text-white">
-            <p className="text-sm uppercase tracking-widest mb-3">Start Fresh</p>
-            <h1 className="text-4xl md:text-5xl font-light">Sets and Pairs</h1>
+    <CollectionPage
+      chapter="Chapter 02 — Sets & Pairs"
+      title={<>Sets <em>&amp; Pairs.</em></>}
+      intro="Matched yarns and coordinated tones, composed to be worn — or given — together."
+      image={setsImg}
+      imageAlt="Coordinated knit sets in natural tones"
+      statement={<>Better <em className="text-accent">together.</em> Composed in one dye lot, so every tone belongs.</>}
+      story={[
+        "Our curated sets and pairs are designed to work in harmony — matched yarns, complementary textures, and coordinated tones that bring cohesion to your wardrobe. Whether you're layering for yourself or gifting to someone special, these groupings take the guesswork out of styling.",
+        "Each set is thoughtfully composed to balance warmth and form. Mix within a set or combine across collections — the earthy palette ensures everything works beautifully together.",
+      ]}
+      products={setsProducts}
+      coda={
+        <section className="relative overflow-hidden bg-oat">
+          <div className="stitch-light absolute inset-0" />
+          <div className="shell section-y relative">
+            <div className="mb-12 grid gap-4 border-t border-foreground pt-4 md:grid-cols-[12rem_1fr]">
+              <p className="meta text-muted-foreground">(03) Gifting</p>
+              <h2 className="text-display">The perfect <em>gift.</em></h2>
+            </div>
+            <ol className="grid gap-px bg-foreground/15 md:grid-cols-3">
+              {giftNotes.map(([title, text]) => (
+                <li key={title} className="bg-oat p-6 md:p-8">
+                  <StitchMark className="mb-10 h-6 w-6 text-accent" />
+                  <h3 className="text-title">{title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-muted-foreground">{text}</p>
+                </li>
+              ))}
+            </ol>
           </div>
-        </div>
-      </section>
-
-      {/* Story */}
-      <section className="max-w-3xl mx-auto px-6 py-16 text-center">
-        <h2 className="text-2xl md:text-3xl font-light text-gray-900 mb-6">
-          Better together.
-        </h2>
-        <p className="text-base leading-relaxed text-gray-700 mb-6">
-          Our curated sets and pairs are designed to work in harmony — matched yarns, complementary textures, and coordinated tones that bring cohesion to your wardrobe. Whether you're layering for yourself or gifting to someone special, these groupings take the guesswork out of styling.
-        </p>
-        <p className="text-base leading-relaxed text-gray-700">
-          Each set is thoughtfully composed to balance warmth and form. Mix within a set or combine across collections — the earthy palette ensures everything works beautifully together.
-        </p>
-      </section>
-
-      {/* Products */}
-      <section className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {setsProducts.map(product => (
-            <ProductCard key={product.slug} product={product} />
-          ))}
-        </div>
-      </section>
-
-      {/* Gift note */}
-      <section className="bg-gray-50 py-16 px-6">
-        <div className="max-w-xl mx-auto text-center">
-          <h2 className="text-2xl font-light text-gray-900 mb-4">The Perfect Gift</h2>
-          <p className="text-base text-gray-700 leading-relaxed mb-6">
-            Every set ships in our custom gift packaging — tissue-wrapped and nestled in a recycled kraft box. Add a handwritten note at checkout to make it personal.
-          </p>
-          <p className="text-sm text-gray-500 uppercase tracking-wider">Free shipping on all sets</p>
-        </div>
-      </section>
-    </>
+        </section>
+      }
+    />
   );
 }

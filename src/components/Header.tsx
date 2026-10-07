@@ -1,81 +1,93 @@
 import { Link, useLocation } from "react-router-dom";
-import { ShoppingBag, Menu, X, Search, User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { useState } from "react";
+import Logo from "@/components/brand/Logo";
+import Marquee from "@/components/brand/Marquee";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { to: "/shop", label: "Shop All" },
-  { to: "/collections/core", label: "Core Collection" },
+  { to: "/shop", label: "Shop" },
+  { to: "/collections/core", label: "Core" },
   { to: "/collections/sets-and-pairs", label: "Sets & Pairs" },
-  { to: "/about", label: "About" },
+  { to: "/about", label: "Atelier" },
   { to: "/contact", label: "Contact" },
 ];
+
+const announcements = ["Complimentary shipping over $100", "AW26 — Chapter 01 is live", "30-day returns", "Five-year repair promise"];
 
 export default function Header() {
   const { totalItems } = useCart();
   const { pathname } = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  useEffect(() => setMobileOpen(false), [pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
   return (
-    <header className="sticky top-0 z-50 bg-background">
-      <div className="bg-primary text-primary-foreground text-center text-[11px] uppercase tracking-[0.2em] py-2.5 px-4">
-        Free shipping on orders over $100 · Free returns within 30 days
+    <header className="sticky top-0 z-50">
+      <div className="h-9 bg-ink text-bone/90">
+        <Marquee items={announcements} size="sm" />
       </div>
 
-      <div className="border-b border-border">
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center h-16 px-6 max-w-7xl mx-auto">
-          <div className="flex items-center gap-4">
-            <button className="lg:hidden" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu">
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+      <div className="border-b border-foreground/15 bg-background/90 backdrop-blur-md">
+        <div className="shell grid h-16 grid-cols-[1fr_auto_1fr] items-center">
+          <div className="flex items-center">
+            <button
+              className="meta -ml-1 p-1 lg:hidden"
+              onClick={() => setMobileOpen(o => !o)}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
+            >
+              {mobileOpen ? "Close" : "Menu"}
             </button>
-            <nav className="hidden lg:flex items-center gap-7">
+            <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
               {navLinks.slice(0, 3).map(link => (
                 <NavItem key={link.to} {...link} active={pathname === link.to} />
               ))}
             </nav>
           </div>
 
-          <Link to="/" className="text-[28px] font-light tracking-tight text-foreground lowercase">
-            emasole<span className="text-accent">.</span>
+          <Link to="/" aria-label="emasole home" className="text-[30px] text-foreground">
+            <Logo />
           </Link>
 
-          <div className="flex items-center justify-end gap-5">
-            <nav className="hidden lg:flex items-center gap-7 mr-3">
+          <div className="flex items-center justify-end gap-7">
+            <nav className="hidden items-center gap-7 lg:flex" aria-label="Secondary">
               {navLinks.slice(3).map(link => (
                 <NavItem key={link.to} {...link} active={pathname === link.to} />
               ))}
             </nav>
-            <button aria-label="Search" className="hidden sm:block text-foreground hover:text-accent transition-colors">
-              <Search className="w-[18px] h-[18px]" />
-            </button>
-            <button aria-label="Account" className="hidden sm:block text-foreground hover:text-accent transition-colors">
-              <User className="w-[18px] h-[18px]" />
-            </button>
-            <Link to="/cart" className="relative text-foreground hover:text-accent transition-colors" aria-label="Shopping bag">
-              <ShoppingBag className="w-[18px] h-[18px]" />
-              {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-accent text-accent-foreground text-[10px] w-[17px] h-[17px] rounded-full flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
+            <Link to="/cart" className="meta flex items-center gap-2 hover:text-accent" aria-label={`Bag, ${totalItems} items`}>
+              <ShoppingBag className="h-4 w-4 sm:hidden" strokeWidth={1.5} />
+              <span className="hidden sm:inline">Bag</span>
+              <span className={cn("tabular-nums", totalItems > 0 && "text-accent")}>({totalItems})</span>
             </Link>
           </div>
         </div>
       </div>
 
       {mobileOpen && (
-        <nav className="lg:hidden border-b border-border bg-background px-6 py-6 space-y-5">
-          {navLinks.map(link => (
-            <Link
-              key={link.to}
-              to={link.to}
-              onClick={() => setMobileOpen(false)}
-              className={cn("block text-xs uppercase tracking-[0.18em] text-muted-foreground", pathname === link.to && "text-foreground")}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav
+          id="mobile-menu"
+          className="fixed inset-x-0 bottom-0 top-header overflow-y-auto bg-ink text-bone lg:hidden"
+          aria-label="Mobile"
+        >
+          <div className="stitch-dark absolute inset-0" />
+          <ol className="shell relative py-10">
+            {navLinks.map((link, i) => (
+              <li key={link.to} className="animate-fade-up border-b border-bone/15" style={{ animationDelay: `${i * 60}ms` }}>
+                <Link to={link.to} className="flex items-baseline gap-5 py-5">
+                  <span className="meta text-madder-light">0{i + 1}</span>
+                  <span className={cn("font-serif text-5xl", pathname === link.to && "italic text-madder-light")}>{link.label}</span>
+                </Link>
+              </li>
+            ))}
+          </ol>
         </nav>
       )}
     </header>
@@ -84,13 +96,7 @@ export default function Header() {
 
 function NavItem({ to, label, active }: { to: string; label: string; active: boolean }) {
   return (
-    <Link
-      to={to}
-      className={cn(
-        "text-[11px] uppercase tracking-[0.18em] transition-colors hover:text-accent",
-        active ? "text-accent" : "text-foreground"
-      )}
-    >
+    <Link to={to} aria-current={active ? "page" : undefined} className={cn("meta link", active && "text-accent")}>
       {label}
     </Link>
   );

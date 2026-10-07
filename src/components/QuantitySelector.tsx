@@ -8,32 +8,15 @@ interface Props {
 }
 
 export default function QuantitySelector({ quantity, onChange, min = 1, max = 99 }: Props) {
+  const btn = "flex h-full w-9 items-center justify-center hover:text-accent disabled:opacity-30";
   return (
-    <div className="flex items-center gap-4">
-      <button
-        onClick={() => onChange(Math.max(min, quantity - 1))}
-        className="w-10 h-10 border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
-        aria-label="Decrease quantity"
-      >
-        <Minus className="w-4 h-4" />
+    <div className="inline-flex h-10 items-stretch border border-foreground/25">
+      <button type="button" onClick={() => onChange(Math.max(min - 1, quantity - 1))} className={btn} aria-label="Decrease quantity">
+        <Minus className="h-3 w-3" />
       </button>
-      <input
-        type="number"
-        value={quantity}
-        onChange={e => {
-          const val = parseInt(e.target.value);
-          if (!isNaN(val)) onChange(Math.min(max, Math.max(min, val)));
-        }}
-        className="w-16 h-10 border border-gray-300 text-center"
-        min={min}
-        max={max}
-      />
-      <button
-        onClick={() => onChange(Math.min(max, quantity + 1))}
-        className="w-10 h-10 border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
-        aria-label="Increase quantity"
-      >
-        <Plus className="w-4 h-4" />
+      <span className="meta flex w-8 items-center justify-center tabular-nums" aria-live="polite">{quantity}</span>
+      <button type="button" onClick={() => onChange(Math.min(max, quantity + 1))} disabled={quantity >= max} className={btn} aria-label="Increase quantity">
+        <Plus className="h-3 w-3" />
       </button>
     </div>
   );

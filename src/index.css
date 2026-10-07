@@ -2,94 +2,251 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   emasole — Knit Atelier design system
+   Palette is named after the dye house. Semantic roles map onto it so
+   components never reference raw colours directly.
+   ========================================================================== */
+
 @layer base {
   :root {
-    /* emasole — terracotta & sage */
-    --background: 36 38% 97%;
-    --foreground: 105 18% 16%;
+    /* Brand palette */
+    --bone: 38 23% 92%;
+    --paper: 37 30% 96%;
+    --oat: 37 26% 82%;
+    --ink: 40 8% 8%;
+    --madder: 12 69% 40%;
+    --madder-light: 14 72% 60%;
+    --moor: 26 41% 32%;
 
-    --card: 36 38% 97%;
-    --card-foreground: 105 18% 16%;
-
-    --popover: 36 38% 97%;
-    --popover-foreground: 105 18% 16%;
-
-    --primary: 105 23% 33%;
-    --primary-foreground: 36 38% 97%;
-
-    --secondary: 34 35% 91%;
-    --secondary-foreground: 105 18% 16%;
-
-    --muted: 34 30% 93%;
-    --muted-foreground: 105 8% 40%;
-
-    --accent: 13 51% 53%;
-    --accent-foreground: 36 38% 97%;
-
-    --sage: 102 20% 56%;
-    --sage-soft: 102 18% 90%;
-    --peach: 25 71% 70%;
-    --peach-soft: 25 70% 92%;
-
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 34 20% 86%;
-    --input: 34 20% 86%;
-    --ring: 105 23% 33%;
+    /* Semantic roles */
+    --background: var(--bone);
+    --foreground: var(--ink);
+    --card: var(--paper);
+    --card-foreground: var(--ink);
+    --popover: var(--paper);
+    --popover-foreground: var(--ink);
+    --primary: var(--ink);
+    --primary-foreground: var(--bone);
+    --secondary: var(--oat);
+    --secondary-foreground: var(--ink);
+    --muted: 38 20% 87%;
+    --muted-foreground: 40 5% 36%;
+    --accent: var(--madder);
+    --accent-foreground: var(--bone);
+    --destructive: 0 66% 42%;
+    --destructive-foreground: var(--bone);
+    --border: 38 12% 76%;
+    --input: 38 12% 76%;
+    --ring: var(--madder);
+    --warm-bg: 38 22% 87%;
 
     --radius: 0rem;
-
-    --warm-bg: 34 35% 93%;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --header-h: 6.25rem;
   }
 
   .dark {
-    --background: 220 20% 5%;
-    --foreground: 40 30% 97%;
-    --card: 220 20% 5%;
-    --card-foreground: 40 30% 97%;
-    --popover: 220 20% 5%;
-    --popover-foreground: 40 30% 97%;
-    --primary: 40 30% 97%;
-    --primary-foreground: 220 20% 10%;
-    --secondary: 220 15% 15%;
-    --secondary-foreground: 40 30% 97%;
-    --muted: 220 15% 15%;
-    --muted-foreground: 220 10% 65%;
-    --accent: 24 80% 58%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 40 30% 97%;
-    --border: 220 15% 18%;
-    --input: 220 15% 18%;
-    --ring: 220 10% 84%;
-    --warm-bg: 35 20% 12%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: var(--ink);
+    --foreground: var(--bone);
+    --card: 40 6% 11%;
+    --card-foreground: var(--bone);
+    --popover: 40 6% 11%;
+    --popover-foreground: var(--bone);
+    --primary: var(--bone);
+    --primary-foreground: var(--ink);
+    --secondary: 40 5% 16%;
+    --secondary-foreground: var(--bone);
+    --muted: 40 5% 14%;
+    --muted-foreground: 38 8% 64%;
+    --accent: var(--madder-light);
+    --accent-foreground: var(--ink);
+    --border: 40 5% 22%;
+    --input: 40 5% 22%;
+    --ring: var(--madder-light);
+    --warm-bg: 40 6% 11%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
 
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background font-sans text-[15px] text-foreground antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    @apply bg-accent text-accent-foreground;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-1 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-serif font-normal;
+    text-wrap: balance;
+  }
+
+  em {
+    @apply italic;
+  }
+
+  button,
+  a {
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer components {
+  /* ── Layout ─────────────────────────────────────────── */
+  .shell {
+    @apply mx-auto w-full max-w-[96rem] px-4 md:px-8;
+  }
+
+  .section-y {
+    @apply py-20 md:py-32;
+  }
+
+  /* ── Typography ─────────────────────────────────────── */
+  .meta {
+    @apply font-mono text-meta uppercase;
+  }
+
+  .text-mega {
+    @apply font-serif text-fluid-mega;
+  }
+
+  .text-display {
+    @apply font-serif text-fluid-display;
+  }
+
+  .text-statement {
+    @apply font-serif text-fluid-statement;
+  }
+
+  .text-headline {
+    @apply font-serif text-fluid-headline;
+  }
+
+  .text-title {
+    @apply font-serif text-fluid-title;
+  }
+
+  .text-lead {
+    @apply max-w-prose text-[15px] leading-7 text-muted-foreground;
+  }
+
+  /* Animated underline for text links */
+  .link {
+    @apply bg-no-repeat pb-0.5;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s;
+  }
+  .link:hover,
+  .link[aria-current="page"] {
+    background-size: 100% 1px;
+  }
+
+  /* ── Buttons ────────────────────────────────────────────
+     A madder fill sweeps in from the left on hover.
+     Variants only set --btn-bg / --btn-fg / border.          */
+  .btn {
+    @apply relative inline-flex h-14 items-center justify-between gap-8 px-6 font-mono text-meta uppercase disabled:pointer-events-none disabled:opacity-40;
+    background-color: hsl(var(--btn-bg));
+    background-image: linear-gradient(hsl(var(--accent)), hsl(var(--accent)));
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: 0% 100%;
+    color: hsl(var(--btn-fg));
+    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s, border-color 0.3s;
+  }
+  .btn:hover {
+    background-size: 100% 100%;
+    color: hsl(var(--accent-foreground));
+    border-color: hsl(var(--accent));
+  }
+  .btn svg {
+    @apply h-3.5 w-3.5 shrink-0 transition-transform duration-500 ease-editorial;
+  }
+  .btn:hover svg {
+    transform: translateX(4px);
+  }
+
+  .btn-primary {
+    --btn-bg: var(--primary);
+    --btn-fg: var(--primary-foreground);
+  }
+  .btn-light {
+    --btn-bg: var(--bone);
+    --btn-fg: var(--ink);
+  }
+  .btn-outline {
+    @apply border border-foreground;
+    --btn-fg: var(--foreground);
+    background-color: transparent;
+  }
+  .btn-outline-light {
+    @apply border border-bone/60;
+    --btn-fg: var(--bone);
+    background-color: transparent;
+  }
+
+  /* ── Forms ──────────────────────────────────────────── */
+  .field-label {
+    @apply meta mb-2 block text-muted-foreground;
+  }
+
+  .field-input {
+    @apply w-full rounded-none border-0 border-b border-foreground/30 bg-transparent px-0 py-3 text-base text-foreground placeholder:text-muted-foreground/60 transition-colors focus:border-accent focus:outline-none focus:ring-0;
+  }
+
+  .chip {
+    @apply meta inline-flex h-10 min-w-10 items-center justify-center border border-foreground/25 px-3 transition-colors hover:border-foreground aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-background disabled:cursor-not-allowed disabled:opacity-40 disabled:line-through;
+  }
+
+  /* ── Surfaces ───────────────────────────────────────── */
+  .media-frame {
+    @apply relative overflow-hidden bg-warm-bg;
+  }
+
+  .tag {
+    @apply meta inline-flex items-center px-1.5 py-0.5;
+  }
+
+  /* Signature knit-stitch texture: columns of V's, like stockinette */
+  .stitch-light,
+  .stitch-dark {
+    @apply pointer-events-none;
+    background-size: 18px 16px;
+  }
+  .stitch-light {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='16'%3E%3Cpath d='M2 2l7 11 7-11' fill='none' stroke='%23161513' stroke-opacity='.07' stroke-width='1.2'/%3E%3C/svg%3E");
+  }
+  .stitch-dark {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='16'%3E%3Cpath d='M2 2l7 11 7-11' fill='none' stroke='%23EEEAE3' stroke-opacity='.06' stroke-width='1.2'/%3E%3C/svg%3E");
+  }
+
+  .grain {
+    @apply pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

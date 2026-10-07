@@ -15,6 +15,7 @@ import ProductDetail from "./pages/ProductDetail";
 import CoreCollection from "./pages/CoreCollection";
 import SetsAndPairs from "./pages/SetsAndPairs";
 import NotFound from "./pages/NotFound";
+import Brand from "./pages/Brand";
 
 const queryClient = new QueryClient();
 
@@ -31,13 +32,13 @@ const App = () => (
               <Route path="/shop" element={<Shop />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
-              
               <Route path="/cart" element={<Cart />} />
               <Route path="/product/:slug" element={<ProductDetail />} />
               <Route path="/collections/core" element={<CoreCollection />} />
               <Route path="/collections/sets-and-pairs" element={<SetsAndPairs />} />
+              <Route path="/brand" element={<Brand />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
-            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </CartProvider>
