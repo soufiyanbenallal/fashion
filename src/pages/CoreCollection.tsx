@@ -15,6 +15,11 @@ export default function CoreCollection() {
       intro="Everyday knitwear for quiet ritual — the foundation of emasole."
       image={coreCollectionImg}
       imageAlt="Folded knitwear in earth tones on oak shelves"
+      hotspots={[
+        { slug: "spring-blade", x: 33, y: 52 },
+        { slug: "classic-set", x: 70, y: 56 },
+        { slug: "harvest-moon-cup", x: 77, y: 31 },
+      ]}
       statement={<>Rooted in craft, <em className="text-accent">built to last</em> — the pieces everything else is layered around.</>}
       story={[
         "The Core Collection represents the foundation of emasole — everyday knitwear designed for quiet ritual. Each piece is hand-knitted from responsibly sourced natural yarns, finished in our signature earth-toned palette that layers effortlessly across seasons.",

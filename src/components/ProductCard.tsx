@@ -5,7 +5,15 @@ import { useToast } from "@/hooks/use-toast";
 import Price from "@/components/brand/Price";
 import { cn } from "@/lib/utils";
 
-export default function ProductCard({ product, className }: { product: Product; className?: string }) {
+type ProductCardProps = {
+  product: Product;
+  /** compact = rails and dense grids: shorter image, no quick add */
+  variant?: "default" | "compact";
+  className?: string;
+};
+
+export default function ProductCard({ product, variant = "default", className }: ProductCardProps) {
+  const compact = variant === "compact";
   const { addItem } = useCart();
   const { toast } = useToast();
   const soldOut = product.badge === "sold-out";
@@ -18,7 +26,7 @@ export default function ProductCard({ product, className }: { product: Product; 
 
   return (
     <article className={cn("group", className)}>
-      <div className="media-frame aspect-[4/5]">
+      <div className={cn("media-frame", compact ? "aspect-[3/4]" : "aspect-[4/5]")}>
         <Link to={href} tabIndex={-1} aria-hidden="true" className="absolute inset-0">
           <img
             src={product.image}
@@ -40,7 +48,7 @@ export default function ProductCard({ product, className }: { product: Product; 
           )}
         </div>
 
-        {!soldOut && (
+        {!soldOut && !compact && (
           <div className="absolute inset-x-2.5 bottom-2.5 flex translate-y-[calc(100%+0.75rem)] items-center justify-between gap-2 bg-bone/95 p-1.5 pl-3 text-ink backdrop-blur transition-transform duration-500 ease-editorial group-hover:translate-y-0 group-focus-within:translate-y-0">
             <span className="meta hidden xl:inline">Quick add</span>
             <div className="flex flex-1 justify-end gap-1">
@@ -60,6 +68,15 @@ export default function ProductCard({ product, className }: { product: Product; 
         )}
       </div>
 
+      {compact ? (
+        <Link to={href} className="mt-2.5 block">
+          <h3 className="truncate font-serif text-lg leading-tight decoration-1 underline-offset-4 group-hover:underline">{product.name}</h3>
+          <div className="meta mt-1 flex items-center justify-between gap-2 opacity-70">
+            <span className="truncate">{product.colour.name}</span>
+            <Price price={product.price} originalPrice={product.originalPrice} />
+          </div>
+        </Link>
+      ) : (
       <Link to={href} className="mt-3 block">
         <div className="meta flex items-center justify-between text-muted-foreground">
           <span>{product.category}</span>
@@ -73,6 +90,7 @@ export default function ProductCard({ product, className }: { product: Product; 
           <Price price={product.price} originalPrice={product.originalPrice} className="shrink-0 text-xs" />
         </div>
       </Link>
+      )}
     </article>
   );
 }

@@ -4,6 +4,7 @@ import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import Logo from "@/components/brand/Logo";
 import Marquee from "@/components/brand/Marquee";
+import { ATELIER_WEEK, isLive } from "@/lib/promos";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -14,7 +15,13 @@ const navLinks = [
   { to: "/contact", label: "Contact" },
 ];
 
-const announcements = ["Complimentary shipping over $100", "AW26 — Chapter 01 is live", "30-day returns", "Five-year repair promise"];
+const announcements = [
+  ...(isLive(ATELIER_WEEK) ? [`${ATELIER_WEEK.title} — ${ATELIER_WEEK.summary} with ${ATELIER_WEEK.code}`] : []),
+  "Complimentary shipping over $100",
+  "AW26 — Chapter 01 is live",
+  "Any two accessories — 10% off",
+  "Five-year repair promise",
+];
 
 export default function Header() {
   const { totalItems } = useCart();

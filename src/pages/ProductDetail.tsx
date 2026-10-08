@@ -4,8 +4,11 @@ import { ArrowRight, Plus } from "lucide-react";
 import { formatNumber, getProductBySlug, getRelatedProducts } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
-import ProductCard from "@/components/ProductCard";
-import SectionHeading from "@/components/brand/SectionHeading";
+import Section from "@/components/brand/Section";
+import ProductRail from "@/components/brand/ProductRail";
+import SetPromo from "@/components/brand/SetPromo";
+import CopyCode from "@/components/brand/CopyCode";
+import { ATELIER_WEEK, isLive } from "@/lib/promos";
 import Price from "@/components/brand/Price";
 import { formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -23,8 +26,9 @@ export default function ProductDetail() {
 
   if (!product) return <Navigate to="/shop" replace />;
 
-  const related = getRelatedProducts(product.slug, 4);
+  const related = getRelatedProducts(product.slug, 8);
   const isSoldOut = product.badge === "sold-out";
+  const promo = isLive(ATELIER_WEEK) && ATELIER_WEEK.appliesTo(product) && !isSoldOut ? ATELIER_WEEK : null;
   const isKnit = product.category === "Knitwear";
 
   const handleAdd = () => {
@@ -108,6 +112,17 @@ export default function ProductDetail() {
                 <span className="flex items-center gap-3">{formatPrice(product.price)} <ArrowRight /></span>
               </button>
 
+              {promo && (
+                <div className="mt-3 flex items-center justify-between gap-4 bg-paper p-3 pl-4">
+                  <p className="text-xs leading-5">
+                    <span className="meta text-accent">{promo.title}</span>
+                    <br />
+                    {promo.summary} — {formatPrice(product.price * (1 - promo.percent / 100))} with code
+                  </p>
+                  <CopyCode code={promo.code} />
+                </div>
+              )}
+
               <div className="mt-10 border-t border-foreground">
                 {details.map(([title, body]) => (
                   <details key={title} className="group border-b border-foreground/20">
@@ -125,13 +140,12 @@ export default function ProductDetail() {
       </section>
 
       {related.length > 0 && (
-        <section className="shell section-y">
-          <SectionHeading index="—" title={<>Wear it <em>with.</em></>} action={{ to: "/shop", label: "All pieces" }} />
-          <div className="grid grid-cols-2 gap-x-3 gap-y-12 md:gap-x-5 lg:grid-cols-4">
-            {related.map(p => <ProductCard key={p.slug} product={p} />)}
-          </div>
-        </section>
+        <Section tone="paper" density="compact" index="—" title={<>Wear it <em>with.</em></>} action={{ to: "/shop", label: "All pieces" }}>
+          <ProductRail products={related} label="Wear it with" />
+        </Section>
       )}
+
+      {product.category === "Accessories" && <SetPromo />}
     </>
   );
 }

@@ -1,6 +1,9 @@
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import ProductCard from "@/components/ProductCard";
 import IndexHeader from "@/components/brand/IndexHeader";
+import PromoTile from "@/components/brand/PromoTile";
+import ServiceStrip from "@/components/brand/ServiceStrip";
+import { ATELIER_WEEK, isLive } from "@/lib/promos";
 import { products, type Product } from "@/data/products";
 import { cn } from "@/lib/utils";
 
@@ -17,6 +20,9 @@ const sorts = {
   "price-desc": { label: "Price, high → low", fn: (a: Product, b: Product) => b.price - a.price },
 };
 
+/** Grid position of the editorial promo tile — breaks the rhythm after the first row */
+const PROMO_SLOT = 4;
+
 type FilterId = (typeof filters)[number]["id"];
 type SortId = keyof typeof sorts;
 
@@ -29,6 +35,8 @@ export default function Shop() {
     const f = filters.find(x => x.id === filter)!;
     return products.filter(f.test).sort(sorts[sort].fn);
   }, [filter, sort]);
+
+  const showPromo = isLive(ATELIER_WEEK) && (filter === "all" || filter === "knitwear") && visible.length > PROMO_SLOT;
 
   return (
     <>
@@ -82,10 +90,17 @@ export default function Shop() {
           <p className="text-statement py-20 text-muted-foreground">Nothing here <em>this season.</em></p>
         ) : (
           <div className={cn("grid grid-cols-2 gap-x-3 gap-y-12 md:gap-x-5", dense ? "lg:grid-cols-4" : "lg:grid-cols-3")}>
-            {visible.map(product => <ProductCard key={product.slug} product={product} />)}
+            {visible.map((product, i) => (
+              <Fragment key={product.slug}>
+                {i === PROMO_SLOT && showPromo && <PromoTile />}
+                <ProductCard product={product} />
+              </Fragment>
+            ))}
           </div>
         )}
       </section>
+
+      <ServiceStrip />
     </>
   );
 }

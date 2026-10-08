@@ -2,7 +2,8 @@ import aboutBg from "@/assets/about-bg.jpg";
 import heroBg from "@/assets/hero-bg.jpg";
 import HeroHeader from "@/components/brand/HeroHeader";
 import ProcessList from "@/components/brand/ProcessList";
-import SectionHeading from "@/components/brand/SectionHeading";
+import Section from "@/components/brand/Section";
+import ServiceStrip from "@/components/brand/ServiceStrip";
 
 const palette = [
   ["Sand", "#D8C3A0", "text-ink"],
@@ -49,8 +50,7 @@ export default function About() {
 
       <ProcessList index="02" />
 
-      <section className="shell section-y">
-        <SectionHeading index="03" title={<>The <em>palette.</em></>} />
+      <Section index="03" title={<>The <em>palette.</em></>}>
         <div className="grid grid-cols-2 gap-px bg-foreground/15 sm:grid-cols-3 lg:grid-cols-5">
           {palette.map(([name, hex, text], i) => (
             <div key={name} className={`flex aspect-[3/4] flex-col justify-between p-4 md:p-5 ${text}`} style={{ backgroundColor: hex }}>
@@ -65,7 +65,7 @@ export default function About() {
         <p className="text-lead mt-8">
           Natural, undyed and plant-dyed yarns — the tonal variation comes from the fleece itself. Our palette reflects the landscapes that inspire us: windswept coastlines, autumn moorlands, the countryside in every season.
         </p>
-      </section>
+      </Section>
 
       <section className="grid border-y border-foreground md:grid-cols-[7fr_5fr]">
         <div className="media-frame aspect-[4/3] md:aspect-auto md:min-h-[70vh]">
@@ -81,6 +81,8 @@ export default function About() {
           ))}
         </ol>
       </section>
+
+      <ServiceStrip />
     </>
   );
 }

@@ -4,6 +4,10 @@ import SectionHeading from "@/components/brand/SectionHeading";
 import Logo, { StitchMark, Wordmark } from "@/components/brand/Logo";
 import ProductCard from "@/components/ProductCard";
 import { products } from "@/data/products";
+import Section, { type Tone } from "@/components/brand/Section";
+import PromoBand from "@/components/brand/PromoBand";
+import PromoTile from "@/components/brand/PromoTile";
+import ProductRow from "@/components/brand/ProductRow";
 
 const colours = [
   { name: "Bone", token: "bone", role: "Canvas — page background", className: "bg-bone text-ink" },
@@ -23,12 +27,21 @@ const type = [
   { name: "Meta", cls: "meta", spec: "IBM Plex Mono · 11/16 · uppercase", sample: "N° 06 — Knitwear — AW26" },
 ];
 
+const tones: [Tone, string][] = [
+  ["bone", "Default canvas"],
+  ["paper", "Compact commerce rows"],
+  ["oat", "Offers, with stitch texture"],
+  ["ink", "Story & process, with stitch texture"],
+  ["madder", "One per page — newsletter"],
+];
+
 const rules = [
   ["Italic carries the voice", "Set the last word of a display line in italic. One emphasis per headline."],
   ["Madder is a signal", "Accent for state, emphasis and the newsletter block only — never decoration."],
   ["Mono is metadata", "Catalogue numbers, labels, prices and navigation. Never paragraphs."],
   ["Hairlines, not boxes", "Separate with 1px ink rules. Square corners everywhere."],
   ["Number everything", "Sections are (01), pieces are N° 01, images are fig. 01."],
+  ["Breathe, then tighten", "Alternate loose editorial sections with compact commerce sections. Never two compact sections in a row."],
 ];
 
 export default function Brand() {
@@ -132,8 +145,49 @@ export default function Brand() {
         </div>
       </section>
 
+      <section className="shell pb-24">
+        <SectionHeading index="05" title={<>Layout <em>rhythm.</em></>} />
+        <div className="grid gap-px bg-foreground/15 md:grid-cols-2">
+          <div className="bg-background p-6">
+            <p className="meta text-muted-foreground">Density</p>
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center gap-4"><span className="h-16 w-full bg-oat" /><span className="meta w-40 shrink-0">Loose · 80 / 128px</span></div>
+              <div className="flex items-center gap-4"><span className="h-8 w-full bg-oat" /><span className="meta w-40 shrink-0">Compact · 40 / 56px</span></div>
+            </div>
+            <p className="mt-6 text-sm leading-6 text-muted-foreground">{"<Section density=\"loose\" | \"compact\">"} — loose for story, compact for rails, rows and services.</p>
+          </div>
+          <div className="bg-background p-6">
+            <p className="meta text-muted-foreground">Tones</p>
+            <ul className="mt-6 grid grid-cols-5 gap-1">
+              {tones.map(([tone, use]) => (
+                <li key={tone}>
+                  <Section tone={tone} density="compact" className="aspect-square [&>div]:p-2"><span className="meta">{tone}</span></Section>
+                  <p className="mt-2 text-[11px] leading-4 text-muted-foreground">{use}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="shell pb-24">
+        <SectionHeading index="06" title={<>Promotion.</>} />
+        <div className="grid gap-px bg-foreground/15 lg:grid-cols-[2fr_1fr]">
+          <div className="space-y-6 bg-background p-6">
+            <p className="meta text-muted-foreground">Promo band · compact, full width, live countdown</p>
+            <div className="-mx-6"><PromoBand /></div>
+            <p className="meta text-muted-foreground">Product row · hero panels, lists</p>
+            <div className="max-w-md border border-foreground/15"><ProductRow product={products[6]} /></div>
+          </div>
+          <div className="bg-background p-6">
+            <p className="meta mb-4 text-muted-foreground">Promo tile · sits in a product grid</p>
+            <div className="max-w-[18rem]"><PromoTile /></div>
+          </div>
+        </div>
+      </section>
+
       <section className="shell pb-32">
-        <SectionHeading index="05" title={<>Rules of <em>the house.</em></>} />
+        <SectionHeading index="07" title={<>Rules of <em>the house.</em></>} />
         <ol className="border-t border-foreground">
           {rules.map(([title, text], i) => (
             <li key={title} className="grid gap-2 border-b border-foreground/20 py-6 md:grid-cols-[12rem_1fr_1fr] md:items-baseline">

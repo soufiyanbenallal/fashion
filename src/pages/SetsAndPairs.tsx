@@ -2,6 +2,8 @@ import { products } from "@/data/products";
 import setsImg from "@/assets/collections/sets-and-pairs.jpg";
 import CollectionPage from "@/components/brand/CollectionPage";
 import { StitchMark } from "@/components/brand/Logo";
+import SetPromo from "@/components/brand/SetPromo";
+import Section from "@/components/brand/Section";
 
 const setsProducts = products.filter(p =>
   ["golden-mist-pair", "classic-set", "country-feast-set", "salt-spout"].includes(p.slug)
@@ -21,6 +23,11 @@ export default function SetsAndPairs() {
       intro="Matched yarns and coordinated tones, composed to be worn — or given — together."
       image={setsImg}
       imageAlt="Coordinated knit sets in natural tones"
+      hotspots={[
+        { slug: "country-feast-set", x: 42, y: 62 },
+        { slug: "salt-spout", x: 64, y: 64 },
+        { slug: "golden-mist-pair", x: 72, y: 42 },
+      ]}
       statement={<>Better <em className="text-accent">together.</em> Composed in one dye lot, so every tone belongs.</>}
       story={[
         "Our curated sets and pairs are designed to work in harmony — matched yarns, complementary textures, and coordinated tones that bring cohesion to your wardrobe. Whether you're layering for yourself or gifting to someone special, these groupings take the guesswork out of styling.",
@@ -28,24 +35,22 @@ export default function SetsAndPairs() {
       ]}
       products={setsProducts}
       coda={
-        <section className="relative overflow-hidden bg-oat">
-          <div className="stitch-light absolute inset-0" />
-          <div className="shell section-y relative">
-            <div className="mb-12 grid gap-4 border-t border-foreground pt-4 md:grid-cols-[12rem_1fr]">
-              <p className="meta text-muted-foreground">(03) Gifting</p>
-              <h2 className="text-display">The perfect <em>gift.</em></h2>
-            </div>
+        <>
+          <SetPromo index="03" />
+          <Section density="compact" index="04" title={<>The perfect <em>gift.</em></>}>
             <ol className="grid gap-px bg-foreground/15 md:grid-cols-3">
               {giftNotes.map(([title, text]) => (
-                <li key={title} className="bg-oat p-6 md:p-8">
-                  <StitchMark className="mb-10 h-6 w-6 text-accent" />
-                  <h3 className="text-title">{title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-muted-foreground">{text}</p>
+                <li key={title} className="flex gap-5 bg-background py-5 md:px-6 md:first:pl-0">
+                  <StitchMark className="h-5 w-5 shrink-0 text-accent" />
+                  <div>
+                    <h3 className="font-serif text-2xl leading-tight">{title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">{text}</p>
+                  </div>
                 </li>
               ))}
             </ol>
-          </div>
-        </section>
+          </Section>
+        </>
       }
     />
   );

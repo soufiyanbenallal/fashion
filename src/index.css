@@ -110,8 +110,20 @@
     @apply mx-auto w-full max-w-[96rem] px-4 md:px-8;
   }
 
+  /* Rhythm: alternate loose (editorial) and compact (commerce) sections */
   .section-y {
     @apply py-20 md:py-32;
+  }
+
+  .section-y-compact {
+    @apply py-10 md:py-14;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 
   /* ── Typography ─────────────────────────────────────── */
